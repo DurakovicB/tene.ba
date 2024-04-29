@@ -1,0 +1,58 @@
+/* ShoeShop.css */
+
+/* Navbar styles */
+.navbar {
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+  }
+  
+  .navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .navbar-nav {
+    list-style-type: none;
+    display: flex;
+  }
+  
+  .nav-item {
+    margin-right: 20px;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .nav-link:hover {
+    text-decoration: underline;
+  }
+  
+  /* Filters section styles */
+  .filters {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .filter-section {
+    margin-bottom: 20px;
+  }
+  
+  .filter-section h3 {
+    margin-bottom: 10px;
+  }
+  
+  /* Shoe display section styles */
+  .shoe-display {
+    padding: 20px;
+  }
+  
+  /* Add more styles as needed */
+  
