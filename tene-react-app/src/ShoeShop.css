@@ -1,7 +1,12 @@
 /* ShoeShop.css */
 
-/* Navbar styles */
-.navbar {
+/* Main container styles */
+.shoe-shop {
+    padding: 20px;
+  }
+  
+  /* Navbar styles */
+  .navbar {
     background-color: #333;
     color: #fff;
     display: flex;
@@ -34,11 +39,20 @@
     text-decoration: underline;
   }
   
+  /* Content wrapper styles */
+  .content-wrapper {
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    margin: 0 auto; /* Center content */
+  }
+  
   /* Filters section styles */
   .filters {
     background-color: #f9f9f9;
     padding: 20px;
     border-right: 1px solid #ddd;
+    width: 200px; /* Set width for filters section */
   }
   
   .filter-section {
@@ -52,7 +66,16 @@
   /* Shoe display section styles */
   .shoe-display {
     padding: 20px;
+    flex: 1; /* Make shoe display section take remaining space */
   }
   
-  /* Add more styles as needed */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-md-4 {
+    flex: 0 0 33.33%; /* Set width for each shoe card */
+    max-width: 33.33%;
+  }
   
