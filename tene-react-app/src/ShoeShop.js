@@ -1,8 +1,9 @@
 // ShoeShop.jsx
 
-import React from 'react';
 import './ShoeShop.css'; // Import your CSS file for styling
 import ShoeCard from './ShoeCard'; // Import the ShoeCard component
+import React, { useState, useEffect } from 'react';
+
 
 const sampleShoes = [
   {
@@ -80,6 +81,19 @@ const sampleShoes = [
 ];
 
 const ShoeShop = () => {
+    const [shoes, setShoes] = useState([]);
+
+    useEffect(() => {
+        // Fetch shoes from API
+        fetch('http://localhost:5000/shoes')
+          .then(response => response.json())
+          .then(data => {
+            console.log('Shoes data:', data); // Display fetched data in console
+            setShoes(data);
+          })
+          .catch(error => console.error('Error fetching shoes:', error));
+      }, []);
+
   return (
     <div className="shoe-shop">
       {/* Navbar */}
@@ -135,7 +149,7 @@ const ShoeShop = () => {
         {/* Shoe Display Section */}
         <div className="shoe-display">
           <div className="row">
-            {sampleShoes.map(shoe => (
+            {shoes.map(shoe => (
               <div key={shoe.id} className="col-md-4 mb-4">
                 <ShoeCard shoe={shoe} /> {/* Render the ShoeCard component */}
               </div>
