@@ -30,6 +30,58 @@ router.get('/shoes', (req, res) => {
   });
 });
 
+// Route to fetch shoes ordered by name ascending
+router.get('/shoes/name-asc', (req, res) => {
+    const query = 'SELECT * FROM shoe ORDER BY name ASC LIMIT 100';
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching shoes ordered by name (ascending): ', err);
+        res.status(500).json({ error: 'Failed to fetch shoes ordered by name (ascending)' });
+        return;
+      }
+      res.json(results);
+    });
+  });
+  
+  // Route to fetch shoes ordered by name descending
+  router.get('/shoes/name-desc', (req, res) => {
+    const query = 'SELECT * FROM shoe ORDER BY name DESC LIMIT 100';
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching shoes ordered by name (descending): ', err);
+        res.status(500).json({ error: 'Failed to fetch shoes ordered by name (descending)' });
+        return;
+      }
+      res.json(results);
+    });
+  });
+  
+  // Route to fetch shoes ordered by price ascending
+  router.get('/shoes/price-asc', (req, res) => {
+    const query = 'SELECT * FROM shoe ORDER BY price ASC LIMIT 100';
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching shoes ordered by price (ascending): ', err);
+        res.status(500).json({ error: 'Failed to fetch shoes ordered by price (ascending)' });
+        return;
+      }
+      res.json(results);
+    });
+  });
+  
+  // Route to fetch shoes ordered by price descending
+  router.get('/shoes/price-desc', (req, res) => {
+    const query = 'SELECT * FROM shoe ORDER BY price DESC LIMIT 100';
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching shoes ordered by price (descending): ', err);
+        res.status(500).json({ error: 'Failed to fetch shoes ordered by price (descending)' });
+        return;
+      }
+      res.json(results);
+    });
+  });
+
 router.get('/shoesizes', (req, res) => {
     const query = 'SELECT sizes FROM shoe'; // Assuming sizes column name is 'sizes'
     connection.query(query, (err, results) => {
