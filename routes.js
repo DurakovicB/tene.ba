@@ -30,57 +30,61 @@ router.get('/shoes', (req, res) => {
   });
 });
 
-// Route to fetch shoes ordered by name ascending
-router.get('/shoes/name-asc', (req, res) => {
-    const query = 'SELECT * FROM shoe ORDER BY name ASC LIMIT 100';
+// Define the route to handle dynamic queries
+router.post('/shoes/query', (req, res) => {
+    // Parse JSON data from request body
+    console.log(req.body);
+    console.log("##################################")
+    const { sortBy, asc_desc, sex } = req.body;
+  
+    // Construct base SQL query
+    let query = 'SELECT * FROM shoe';
+  
+    // Add WHERE clause for filtering by parameters
+    const whereConditions = [];
+  
+
+    /*/ Filter by sizes
+    if (sizes && sizes.length > 0) {
+      const sizeConditions = sizes.map(size => `sizes LIKE '%${size}%'`).join(' OR ');
+      whereConditions.push(`(${sizeConditions})`);
+    }*/
+  
+    // Filter by sex
+    if (sex) {
+      whereConditions.push(`sex = '${sex}'`);
+    }
+  
+    // Filter by brand
+    /*
+    if (brand) {
+      whereConditions.push(`brand = '${brand}'`);
+    }
+    */
+  
+    // Construct WHERE clause if there are any conditions
+    if (whereConditions.length > 0) {
+      query += ` WHERE ${whereConditions.join(' AND ')}`;
+    }
+  
+    // Add ORDER BY clause for sorting
+    if (sortBy && ['name', 'price'].includes(sortBy)) {
+      const order = asc_desc === 'desc' ? 'DESC' : 'ASC';
+      query += ` ORDER BY ${sortBy} ${order} `;
+    }
+    query += ' limit 100';
+  
+    // Execute the constructed query
     connection.query(query, (err, results) => {
       if (err) {
-        console.error('Error fetching shoes ordered by name (ascending): ', err);
-        res.status(500).json({ error: 'Failed to fetch shoes ordered by name (ascending)' });
+        console.error('Error executing query:', err);
+        res.status(500).json({ error: 'Failed to execute query' });
         return;
       }
-      res.json(results);
+      res.json(results); // Return results as JSON
     });
   });
   
-  // Route to fetch shoes ordered by name descending
-  router.get('/shoes/name-desc', (req, res) => {
-    const query = 'SELECT * FROM shoe ORDER BY name DESC LIMIT 100';
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error('Error fetching shoes ordered by name (descending): ', err);
-        res.status(500).json({ error: 'Failed to fetch shoes ordered by name (descending)' });
-        return;
-      }
-      res.json(results);
-    });
-  });
-  
-  // Route to fetch shoes ordered by price ascending
-  router.get('/shoes/price-asc', (req, res) => {
-    const query = 'SELECT * FROM shoe ORDER BY price ASC LIMIT 100';
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error('Error fetching shoes ordered by price (ascending): ', err);
-        res.status(500).json({ error: 'Failed to fetch shoes ordered by price (ascending)' });
-        return;
-      }
-      res.json(results);
-    });
-  });
-  
-  // Route to fetch shoes ordered by price descending
-  router.get('/shoes/price-desc', (req, res) => {
-    const query = 'SELECT * FROM shoe ORDER BY price DESC LIMIT 100';
-    connection.query(query, (err, results) => {
-      if (err) {
-        console.error('Error fetching shoes ordered by price (descending): ', err);
-        res.status(500).json({ error: 'Failed to fetch shoes ordered by price (descending)' });
-        return;
-      }
-      res.json(results);
-    });
-  });
 
 router.get('/shoesizes', (req, res) => {
     const query = 'SELECT sizes FROM shoe'; // Assuming sizes column name is 'sizes'

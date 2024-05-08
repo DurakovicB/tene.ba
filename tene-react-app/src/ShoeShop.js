@@ -5,27 +5,44 @@ import React, { useState, useEffect } from 'react';
 const ShoeShop = () => {
     const [shoes, setShoes] = useState([]);
     const [sizes, setSizes] = useState([]);
+    const [sortByValue, setSortByValue] = useState("title"); // Default sort value
 
     useEffect(() => {
-        // Fetch shoes from API
-        fetch('http://localhost:5000/shoes')
-          .then(response => response.json())
-          .then(data => {
-            console.log('Shoes data:', data); // Display fetched data in console
-            setShoes(data);
-          })
-          .catch(error => console.error('Error fetching shoes:', error));
+      // Define the request options
+      const requestOptions = {
+        method: 'POST', // Use POST method
+        headers: {
+          'Content-Type': 'application/json' // Specify JSON content type
+        },
+        body: JSON.stringify({ "sortBy": sortByValue ,"sex":"Male","asc_desc":"desc"}) // Convert sortByValue to JSON string and set as the request body
+      };
+    
+      // Fetch shoes from API
+      fetch('http://localhost:5000/shoes/query', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          console.log('Shoes data:', data); // Display fetched data in console
+          setShoes(data);
+        })
+        .catch(error => console.error('Error fetching shoes:', error));
+    
+      // Fetch shoe sizes from API
+      fetch('http://localhost:5000/shoesizes')
+      .then(response => response.json())
+      .then(data => {
+        //console.log('Shoe sizes:', data); // Display fetched data in console
+        setSizes(data);
+      })
+      .catch(error => console.error('Error fetching shoe sizes:', error));
+  
         
-          
-        // Fetch shoe sizes from API
-        fetch('http://localhost:5000/shoesizes')
-          .then(response => response.json())
-          .then(data => {
-            console.log('Shoe sizes:', data); // Display fetched data in console
-            setSizes(data);
-          })
-          .catch(error => console.error('Error fetching shoe sizes:', error));
-      }, []);
+      }, [sortByValue]); // Execute useEffect whenever sortByValue changes
+    
+    
+
+      const handleSortChange = (event) => {
+        setSortByValue(event.target.value);
+      };
 
   return (
     <div className="shoe-shop">
@@ -46,11 +63,11 @@ const ShoeShop = () => {
           <h2>Filters</h2>
           <div className="filter-section">
             <h3>Sort By</h3>
-            <select>
-              <option value="name_asc">Name - A to Z</option>
-              <option value="name_desc">Name - Z to A</option>
-              <option value="price_asc">Price - Low to High</option>
-              <option value="price_desc">Price - High to Low</option>
+            <select value={sortByValue} onChange={handleSortChange}>
+              <option value="title">Name - A to Z</option>
+              <option value="title">Name - Z to A</option>
+              <option value="price">Price - Low to High</option>
+              <option value="price">Price - High to Low</option>
             </select>
           </div>
           <div className="filter-section">
