@@ -33,8 +33,7 @@ router.get('/shoes', (req, res) => {
 // Define the route to handle dynamic queries
 router.post('/shoes/query', (req, res) => {
     // Parse JSON data from request body
-    console.log(req.body);
-    console.log("##################################")
+    //console.log(req.body);
     const { sortBy, asc_desc, sex } = req.body;
   
     // Construct base SQL query

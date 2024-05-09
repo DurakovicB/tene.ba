@@ -14,14 +14,15 @@ const ShoeShop = () => {
         headers: {
           'Content-Type': 'application/json' // Specify JSON content type
         },
-        body: JSON.stringify({ "sortBy": sortByValue ,"sex":"Male","asc_desc":"desc"}) // Convert sortByValue to JSON string and set as the request body
+        //getting sortBy and asc_desc value from jsx element valu
+        body: JSON.stringify({ "sortBy": sortByValue.split(".")[0] ,"sex":"Male","asc_desc":sortByValue.split(".")[1]}) // Convert sortByValue to JSON string and set as the request body
       };
     
       // Fetch shoes from API
       fetch('http://localhost:5000/shoes/query', requestOptions)
         .then(response => response.json())
         .then(data => {
-          console.log('Shoes data:', data); // Display fetched data in console
+          //console.log('Shoes data:', data); // Display fetched data in console
           setShoes(data);
         })
         .catch(error => console.error('Error fetching shoes:', error));
@@ -64,10 +65,10 @@ const ShoeShop = () => {
           <div className="filter-section">
             <h3>Sort By</h3>
             <select value={sortByValue} onChange={handleSortChange}>
-              <option value="title">Name - A to Z</option>
-              <option value="title">Name - Z to A</option>
-              <option value="price">Price - Low to High</option>
-              <option value="price">Price - High to Low</option>
+              <option value="name.asc">Name - A to Z</option>
+              <option value="name.desc">Name - Z to A</option>
+              <option value="price.asc">Price - Low to High</option>
+              <option value="price.desc">Price - High to Low</option>
             </select>
           </div>
           <div className="filter-section">
