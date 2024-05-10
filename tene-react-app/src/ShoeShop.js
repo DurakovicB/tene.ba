@@ -5,7 +5,8 @@ import React, { useState, useEffect } from 'react';
 const ShoeShop = () => {
     const [shoes, setShoes] = useState([]);
     const [sizes, setSizes] = useState([]);
-    const [sortByValue, setSortByValue] = useState("title"); // Default sort value
+    const [sortByValue, setSortByValue] = useState("name.asc"); // Default sort value
+    const [selectedSexes, setSelectedSexes] = useState([]);
 
     useEffect(() => {
       // Define the request options
@@ -15,7 +16,7 @@ const ShoeShop = () => {
           'Content-Type': 'application/json' // Specify JSON content type
         },
         //getting sortBy and asc_desc value from jsx element valu
-        body: JSON.stringify({ "sortBy": sortByValue.split(".")[0] ,"sex":"Male","asc_desc":sortByValue.split(".")[1]}) // Convert sortByValue to JSON string and set as the request body
+        body: JSON.stringify({ "sortBy": sortByValue.split(".")[0] ,"sex":selectedSexes,"asc_desc":sortByValue.split(".")[1]}) 
       };
     
       // Fetch shoes from API
@@ -37,12 +38,22 @@ const ShoeShop = () => {
       .catch(error => console.error('Error fetching shoe sizes:', error));
   
         
-      }, [sortByValue]); // Execute useEffect whenever sortByValue changes
+      }, [sortByValue,selectedSexes]); // Execute useEffect whenever sortByValue changes
     
     
 
       const handleSortChange = (event) => {
         setSortByValue(event.target.value);
+      };
+
+    // Function to handle checkbox change
+      const handleCheckboxChange = (event) => {
+        const { value, checked } = event.target;
+        if (checked) {
+          setSelectedSexes(prevSelected => [...prevSelected, value]);
+        } else {
+          setSelectedSexes(prevSelected => prevSelected.filter(sex => sex !== value));
+        }
       };
 
   return (
@@ -88,15 +99,15 @@ const ShoeShop = () => {
             {/* Add more type checkboxes here */}
           </div>
           <div className="filter-section">
-            <h3>Shoe Sex</h3>
-            <input type="checkbox" id="sex1" name="sex1" />
-            <label htmlFor="sex1">Men</label>
-            <input type="checkbox" id="sex2" name="sex2" />
-            <label htmlFor="sex2">Women</label>
-            <input type="checkbox" id="sex3" name="sex3" />
-            <label htmlFor="sex3">Kids</label>
-            {/* Add more type checkboxes here */}
-          </div>
+          <h3>Shoe Sex</h3>
+          <input type="checkbox" id="sex1" name="sex1" value="Male" onChange={handleCheckboxChange} />
+          <label htmlFor="sex1">Men</label>
+          <input type="checkbox" id="sex2" name="sex2" value="Female" onChange={handleCheckboxChange} />
+          <label htmlFor="sex2">Women</label>
+          <input type="checkbox" id="sex3" name="sex3" value="Kid" onChange={handleCheckboxChange} />
+          <label htmlFor="sex3">Kids</label>
+          {/* Add more type checkboxes here */}
+        </div>
           <div className="filter-section">
             <h3>Shoe Sizes</h3>
             {sizes.map((size, index) => (

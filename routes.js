@@ -30,12 +30,23 @@ router.get('/shoes', (req, res) => {
   });
 });
 
+router.get('/removebs', (req, res) => {
+  const query = 'delete from shoe where name like "Jibbitz%"';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('Error removing bs: ', err);
+      res.status(500).json({ error: 'Failed to remove bs' });
+      return;
+    }
+    res.json(results);
+  });
+});
+
 // Define the route to handle dynamic queries
 router.post('/shoes/query', (req, res) => {
     // Parse JSON data from request body
     //console.log(req.body);
     const { sortBy, asc_desc, sex } = req.body;
-  
     // Construct base SQL query
     let query = 'SELECT * FROM shoe';
   
@@ -50,9 +61,11 @@ router.post('/shoes/query', (req, res) => {
     }*/
   
     // Filter by sex
-    if (sex) {
-      whereConditions.push(`sex = '${sex}'`);
-    }
+    if (Array.isArray(sex) && sex.length > 0) {
+      // If sex is an array (multiple checkboxes selected), use IN operator
+      const sexValues = sex.map(s => `'${s}'`).join(', '); // Surround each value with quotes
+      whereConditions.push(`sex IN (${sexValues})`);
+    } 
   
     // Filter by brand
     /*

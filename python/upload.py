@@ -1,4 +1,4 @@
-def upload_shoes_to_database(connection, shoes_data, sex, store_id):
+def upload_shoes_to_database(connection, shoes_data, store_id):
     try:
         with connection.cursor() as cursor:
             for shoe in shoes_data:
@@ -20,7 +20,7 @@ def upload_shoes_to_database(connection, shoes_data, sex, store_id):
                     shoe['product_image'],
                     shoe['sizes'],
                     shoe['shoe_link'],
-                    sex
+                    shoe['sex']
                 ))
 
         connection.commit()

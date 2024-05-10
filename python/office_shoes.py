@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 import time
 
 
-def scrape_office_shoes(driver, url):
+def scrape_office_shoes(driver, url,sex):
     driver.get(url)
     time.sleep(1)
     driver.execute_script('$(".cookie-button").click();')
@@ -26,7 +26,8 @@ def scrape_office_shoes(driver, url):
             'price': price,
             'product_name': product_name,
             'sizes': ', '.join(sizes),
-            'shoe_link': shoe_link
+            'shoe_link': shoe_link,
+            'sex':sex
         }
         shoes_data.append(shoe_data)
 
@@ -35,15 +36,15 @@ def scrape_office_shoes(driver, url):
 
 def office_shoes_men(driver):
     url = 'https://www.officeshoes.ba/obuca-muska-obuca/2/48/order_asc?page=20'
-    return scrape_office_shoes(driver, url)
+    return scrape_office_shoes(driver, url, "Male")
 
 def office_shoes_women(driver):
     url = "https://www.officeshoes.ba/obuca-zenska-obuca/1/48/order_asc?page=40"
-    return scrape_office_shoes(driver, url)
+    return scrape_office_shoes(driver, url, "Female")
 
 def office_shoes_kids(driver):
     url = "https://www.officeshoes.ba/obuca-djecija-obuca/3/48/order_asc?page=40"
-    return scrape_office_shoes(driver, url)
+    return scrape_office_shoes(driver, url, "Kid")
 
 def get_all_office_shoes(driver):
     men_shoes = office_shoes_men(driver)

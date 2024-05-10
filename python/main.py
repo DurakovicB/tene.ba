@@ -14,11 +14,10 @@ shoes_data += get_all_office_shoes(driver)
 #shoes_data+= scrape_intersport_shoes(driver,"https://www.intersport.ba/muskarci/obuca?ow_fw_size=4315",'47 1/3')
 
 driver.quit()
-sex = "Male"
 store_id=1
-upload_shoes_to_database(db_connection, shoes_data, sex,store_id)
+upload_shoes_to_database(db_connection, shoes_data,store_id)
 db_connection.close()
 
-print(shoes_data[1])
+#print(shoes_data[1])
 total_shoes = len(shoes_data)
 print(f"Found {total_shoes} shoes total.")
