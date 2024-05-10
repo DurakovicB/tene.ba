@@ -46,7 +46,7 @@ router.get('/removebs', (req, res) => {
 router.post('/shoes/query', (req, res) => {
     // Parse JSON data from request body
     //console.log(req.body);
-    const { sortBy, asc_desc, sex } = req.body;
+    const { sortBy, asc_desc, sex, sizes } = req.body;
     // Construct base SQL query
     let query = 'SELECT * FROM shoe';
   
@@ -54,11 +54,11 @@ router.post('/shoes/query', (req, res) => {
     const whereConditions = [];
   
 
-    /*/ Filter by sizes
+    // Filter by sizes
     if (sizes && sizes.length > 0) {
       const sizeConditions = sizes.map(size => `sizes LIKE '%${size}%'`).join(' OR ');
       whereConditions.push(`(${sizeConditions})`);
-    }*/
+    }
   
     // Filter by sex
     if (Array.isArray(sex) && sex.length > 0) {
