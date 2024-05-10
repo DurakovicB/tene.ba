@@ -31,7 +31,7 @@ router.get('/shoes', (req, res) => {
 });
 
 router.get('/removebs', (req, res) => {
-  const query = 'delete from shoe where name like "Jibbitz%"';
+  const query = 'delete from shoe where name like "Jibbitz%" or sizes like "%OS%" or sizes like"%UNI%" or sizes like "%XSS%" or sizes like "%Standard%" ';
   connection.query(query, (err, results) => {
     if (err) {
       console.error('Error removing bs: ', err);
