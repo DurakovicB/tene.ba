@@ -10,6 +10,10 @@ const ShoeShop = () => {
     const [showAllSizes, setShowAllSizes] = useState(false);
     const [sizesArray, setSizesArray] = useState([]);
     const [shoeCount, setShoeCount] = useState(0);
+    const [brands, setBrands] = useState([]);
+    const [showAllBrands, setShowAllBrands] = useState(false);
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [brandsArray, setBrandsArray] = useState([]);
 
     useEffect(() => {
       // Define the request options
@@ -19,7 +23,7 @@ const ShoeShop = () => {
           'Content-Type': 'application/json' // Specify JSON content type
         },
         //getting sortBy and asc_desc value from jsx element value
-        body: JSON.stringify({ "sortBy": sortByValue.split(".")[0] ,"sex":selectedSexes,"asc_desc":sortByValue.split(".")[1], "sizes": sizesArray}) 
+        body: JSON.stringify({ "sortBy": sortByValue.split(".")[0] ,"sex":selectedSexes,"asc_desc":sortByValue.split(".")[1], "sizes": sizesArray, "brands":brandsArray}) 
       };
     
       // Fetch shoes from API
@@ -41,8 +45,15 @@ const ShoeShop = () => {
       })
       .catch(error => console.error('Error fetching shoe sizes:', error));
   
-        
-      }, [sortByValue,selectedSexes,sizesArray]); // Execute useEffect whenever sortByValue changes
+      fetch('http://localhost:5000/shoebrands')
+      .then(response => response.json())
+      .then(data => {
+        //console.log('Shoe brands:', data); // Display fetched data in console
+        setBrands(data);
+      })
+      .catch(error => console.error('Error fetching shoe brands:', error));  
+
+      }, [sortByValue,selectedSexes,sizesArray,brandsArray]); // Execute useEffect whenever sortByValue changes
     
     
 
@@ -53,6 +64,10 @@ const ShoeShop = () => {
       // Function to toggle showing all sizes
       const toggleShowAllSizes = () => {
         setShowAllSizes(prevState => !prevState);
+      };
+
+      const toggleShowAllBrands = () => {
+        setShowAllBrands(prevState => !prevState);
       };
 
     // Function to handle checkbox change
@@ -72,6 +87,15 @@ const ShoeShop = () => {
           setSizesArray(prevSizes => [...prevSizes, value]);
         } else {
           setSizesArray(prevSizes => prevSizes.filter(size => size !== value));
+        }
+      };
+
+      const handleBrandsCheckboxChange = (event) => {
+        const { value, checked } = event.target;
+        if (checked) {
+          setBrandsArray(prevBrands => [...prevBrands, value]);
+        } else {
+          setBrandsArray(prevBrands => prevBrands.filter(size => size !== value));
         }
       };
 
@@ -107,22 +131,6 @@ const ShoeShop = () => {
             </select>
           </div>
           <div className="filter-section">
-            <h3>Brands</h3>
-            <input type="checkbox" id="brand1" name="brand1" />
-            <label htmlFor="brand1">Nike</label>
-            <input type="checkbox" id="brand2" name="brand2" />
-            <label htmlFor="brand2">Adidas</label>
-            {/* Add more brand checkboxes here */}
-          </div>
-          <div className="filter-section">
-            <h3>Shoe Types</h3>
-            <input type="checkbox" id="type1" name="type1" />
-            <label htmlFor="type1">Sneakers</label>
-            <input type="checkbox" id="type2" name="type2" />
-            <label htmlFor="type2">Boots</label>
-            {/* Add more type checkboxes here */}
-          </div>
-          <div className="filter-section">
           <h3>Shoe Sex</h3>
           <input type="checkbox" id="sex1" name="sex1" value="Male" onChange={handleSexesCheckboxChange} />
           <label htmlFor="sex1">Men</label>
@@ -130,7 +138,27 @@ const ShoeShop = () => {
           <label htmlFor="sex2">Women</label>
           <input type="checkbox" id="sex3" name="sex3" value="Kid" onChange={handleSexesCheckboxChange} />
           <label htmlFor="sex3">Kids</label>
-          {/* Add more type checkboxes here */}
+        </div>
+        <div className="filter-section">
+            <h3>Brands</h3>
+            {brands.slice(0, showAllBrands ? brands.length : 5).map((brand, index) => (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  id={`brand${index + 1}`}
+                  name={`brand${index + 1}`}
+                  value={brand}
+                  onChange={handleBrandsCheckboxChange}
+                />
+                <label htmlFor={`brand${index + 1}`}>{brand}</label>
+              </div>
+            ))}
+            {brands.length > 5 && (
+              <button onClick={toggleShowAllBrands}>
+                {showAllBrands ? "Show Less" : "Show More"}
+              </button>
+            )}
+            <p>Selected Brands: {brandsArray.join(', ')}</p>
         </div>
         <div className="filter-section">
             <h3>Shoe Sizes</h3>

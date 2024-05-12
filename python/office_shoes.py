@@ -20,15 +20,16 @@ def scrape_office_shoes(driver, url,sex):
         product_name = article.find('h2', class_='product_list_title').text.strip()
         sizes = [button.text.strip() for button in article.select('.product-size-button')]
         shoe_link = article.find('a', class_='send-search')['href']
-
+        brand = article.find('img', class_='article-wishlist-image')['data-brand']
         shoe_data = {
             'product_image': product_image,
             'price': price,
             'product_name': product_name,
             'sizes': ', '.join(sizes),
             'shoe_link': shoe_link,
-            'sex':sex
-        }
+            'brand': brand,
+            'sex': sex
+            }
         shoes_data.append(shoe_data)
 
     return shoes_data

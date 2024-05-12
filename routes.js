@@ -38,7 +38,7 @@ router.get('/removebs', (req, res) => {
       res.status(500).json({ error: 'Failed to remove bs' });
       return;
     }
-    res.json(results);
+    //res.json(results);
   });
 });
 
@@ -46,7 +46,7 @@ router.get('/removebs', (req, res) => {
 router.post('/shoes/query', (req, res) => {
     // Parse JSON data from request body
     //console.log(req.body);
-    const { sortBy, asc_desc, sex, sizes } = req.body;
+    const { sortBy, asc_desc, sex, sizes,brands } = req.body;
     // Construct base SQL query
     let query = 'SELECT * FROM shoe join store on shoe.store_id = store.store_id';
   
@@ -68,11 +68,11 @@ router.post('/shoes/query', (req, res) => {
     } 
   
     // Filter by brand
-    /*
-    if (brand) {
-      whereConditions.push(`brand = '${brand}'`);
-    }
-    */
+    if (Array.isArray(brands) && brands.length > 0) {
+      // If brands is an array (multiple checkboxes selected), use IN operator
+      const brandValues = brands.map(s => `'${s}'`).join(', '); // Surround each value with quotes
+      whereConditions.push(`brand IN (${brandValues})`);
+    } 
   
     // Construct WHERE clause if there are any conditions
     if (whereConditions.length > 0) {
@@ -112,6 +112,19 @@ router.get('/shoesizes', (req, res) => {
     });
   });
 
+  router.get('/shoebrands', (req, res) => {
+    const query = 'SELECT distinct brand FROM shoe'; // Assuming sizes column name is 'sizes'
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('Error fetching shoe brands: ', err);
+        res.status(500).json({ error: 'Failed to fetch shoe brands' });
+        return;
+      }
+      const brands = results.map(row => row.brand);
+      res.json(brands);
+    });
+  });
+
 router.get('/scrape', (req, res) => {
   exec('python python/main.py', (error, stdout, stderr) => {
     if (error) {
@@ -120,6 +133,8 @@ router.get('/scrape', (req, res) => {
       return;
     }
     console.log('Python script output:', stdout);
+
+    router.handle({ method: 'get', url: '/removebs' }, res, () => {});
     res.status(200).send('Python script executed successfully');
   });
 });

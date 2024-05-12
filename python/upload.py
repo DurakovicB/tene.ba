@@ -8,9 +8,9 @@ def upload_shoes_to_database(connection, shoes_data, store_id):
                 price = shoe.get('price', 0)
                 sql = """
                     INSERT INTO shoe
-                    (store_id, name, price, previous_price, image_url, sizes, link, sex)
+                    (store_id, name, price, previous_price, image_url, sizes, link, sex, brand)
                     VALUES
-                    (%s, %s, %s, %s, %s, %s, %s, %s)
+                    (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
                 cursor.execute(sql, (
                     store_id,
@@ -20,7 +20,8 @@ def upload_shoes_to_database(connection, shoes_data, store_id):
                     shoe['product_image'],
                     shoe['sizes'],
                     shoe['shoe_link'],
-                    shoe['sex']
+                    shoe['sex'],
+                    shoe['brand']
                 ))
 
         connection.commit()
