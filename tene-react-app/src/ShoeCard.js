@@ -11,12 +11,15 @@ const ShoeCard = ({ shoe }) => {
       </div>
       <div className="card-body">
         <h5 className="card-title">{shoe.name}</h5>
-        <p className="card-text">Brand: {shoe.brand}</p>
-        <p className="card-text">Store: {shoe.storename}</p>
-        <p className="card-text"> {shoe.price} KM</p>
+        <p className="card-text"><strong>Brand:</strong> {shoe.brand}</p>
+        <p className="card-text"><strong>Store:</strong> {shoe.storename}</p>
+        <div className="price-container">
+          <p className="price">{shoe.price} KM</p>
+        </div>
       </div>
     </div>
   );
 }
+
 
 export default ShoeCard;
