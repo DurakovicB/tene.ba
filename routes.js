@@ -48,7 +48,7 @@ router.post('/shoes/query', (req, res) => {
     //console.log(req.body);
     const { sortBy, asc_desc, sex, sizes } = req.body;
     // Construct base SQL query
-    let query = 'SELECT * FROM shoe';
+    let query = 'SELECT * FROM shoe join store on shoe.store_id = store.store_id';
   
     // Add WHERE clause for filtering by parameters
     const whereConditions = [];

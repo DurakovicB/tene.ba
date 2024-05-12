@@ -9,6 +9,7 @@ const ShoeShop = () => {
     const [selectedSexes, setSelectedSexes] = useState([]);
     const [showAllSizes, setShowAllSizes] = useState(false);
     const [sizesArray, setSizesArray] = useState([]);
+    const [shoeCount, setShoeCount] = useState(0);
 
     useEffect(() => {
       // Define the request options
@@ -27,6 +28,7 @@ const ShoeShop = () => {
         .then(data => {
           //console.log('Shoes data:', data); // Display fetched data in console
           setShoes(data);
+          setShoeCount(data.length);
         })
         .catch(error => console.error('Error fetching shoes:', error));
     
@@ -86,6 +88,9 @@ const ShoeShop = () => {
           <li className="nav-item"><a href="#" className="nav-link">Log in/Register</a></li>
         </ul>
       </nav>
+
+      {/* Element displaying the number of shoes found */}
+      
 
       {/* Content wrapper */}
       <div className="content-wrapper">
@@ -150,16 +155,27 @@ const ShoeShop = () => {
           </div>
         </div>
 
-        {/* Shoe Display Section */}
-        <div className="shoe-display">
-          <div className="row">
-            {shoes.map(shoe => (
-              <div key={shoe.id} className="col-md-4 mb-4">
-                <ShoeCard shoe={shoe} /> {/* Render the ShoeCard component */}
-              </div>
-            ))}
+        <div>
+
+          {/* Shoe Count */}
+          <div className="shoe-count">
+            Found {shoeCount} shoes.
           </div>
+
+          {/* Shoe Display Section */}
+          <div className="shoe-display">
+            <div className="row">
+              {shoes.map(shoe => (
+                <div key={shoe.id} className="col-md-4 mb-4">
+                  <ShoeCard shoe={shoe} /> {/* Render the ShoeCard component */}
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
+
+
       </div>
     </div>
   );

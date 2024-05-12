@@ -67,6 +67,18 @@
     flex: 1; /* Make shoe display section take remaining space */
 }
 
+.shoe-count {
+  padding: 10px;
+  margin-left: 30px; /* Align to the right */
+  margin-top: 0; /* Adjust margin to position at the top */
+  font-size: 25px; /* Increase font size */
+  width: 100%; /* Make the element as wide as possible */
+  height: 20px; /* Set the fixed height */
+  overflow: hidden; /* Hide content overflow */
+}
+
+
+
 .row {
     display: flex;
     flex-wrap: wrap;
