@@ -140,8 +140,4 @@ router.get('/scrape', (req, res) => {
 });
 
 
-router.get('/scrapeintersportshoes', (req, res) => {
-    
-});
-
 module.exports = router;
